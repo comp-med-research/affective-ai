@@ -1,4 +1,5 @@
-# affective-ai
-A multimodal benchmark study on how well popular general purpose and open source specialized LLMs are able to identify and respond to user emotions.
+# Benchmarking Multimodal Emotion Detection in Large Language Models
 
-Title: Benchmarking Multimodal Emotion Detection and Evaluating Generated Responses in Large Language Models
+A multimodal benchmark study on how well popular general purpose LLMs and open source multimodal models specialized for emotion detection are able to identify and respond to user emotions.
+
+
