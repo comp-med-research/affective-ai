@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.ipynb_checkpoints/
+
+# Virtual Environments
+emotion/
+.venv/
+env/
+venv/
+
+# Notebooks
+notebooks/test.ipynb
+
+# Data
+data/
+*.tar.gz
+
+# Models & Outputs
+models/
+outputs/
+
+# Logs
+*.log
+
+# System
+.DS_Store
+.env
