@@ -2,6 +2,7 @@ import argparse
 import yaml
 import pandas as pd
 from pathlib import Path
+from ..utils.parsing import parse_emotion_response
 import importlib
 from tqdm import tqdm
 
@@ -30,7 +31,7 @@ def main(config_path: str):
     task = config.get("task", "emotion_classification")
 
     # Load model module dynamically
-    model_module = importlib.import_module(f"src.models.{model_name}_api")
+    model_module = importlib.import_module(f"src.models.{model_name}")
 
     # Load dataset
     merged_path = Path(f"data/merged/{split}_merged.csv")
@@ -40,10 +41,12 @@ def main(config_path: str):
     print(f"Running inference with {model_name} on modality: {modality} ({len(df)} examples)")
     for _, row in tqdm(df.iterrows(), total=len(df)):
         inputs = build_inputs(row, modality)
-        prediction = model_module.infer(**inputs, task=task)
-        predictions.append(prediction)
+        response = model_module.infer(**inputs, task=task)
+        emotion, rationale = parse_emotion_response(response)
+        predictions.append((emotion, rationale))
 
-    df["prediction"] = predictions
+    df["prediction"] = [p[0] for p in predictions]
+    df["rationale"] = [p[1] for p in predictions]
     Path(output_file).parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(output_file, index=False)
     print(f"✅ Saved predictions to {output_file}")
