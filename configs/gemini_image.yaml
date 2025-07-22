@@ -1,0 +1,5 @@
+model: gemini
+modality: image
+split: dev
+task: emotion_classification
+output_file: results/predictions/gemini_image_dev.csv
