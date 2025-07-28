@@ -23,6 +23,8 @@ def build_inputs(row, modalities: list[str]):
         inputs["audio_path"] = row.get("audio_path")
     if "image" in modalities:
         inputs["image_path"] = row.get("image_path")
+    if "video" in modalities:
+        inputs["video_path"] = row.get("video_path")
 
     return inputs
 

@@ -1,0 +1,5 @@
+model: gemini
+modalities: "image+audio"
+split: dev
+task: emotion_classification
+output_file: results/predictions/gemini_image_audio_dev.csv
