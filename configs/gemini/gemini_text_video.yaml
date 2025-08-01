@@ -1,0 +1,5 @@
+model: gemini
+modalities: "text+video"
+split: dev
+task: emotion_classification
+output_file: results/predictions/gemini_text_video_dev.csv
