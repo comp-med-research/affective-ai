@@ -17,7 +17,7 @@ if not GOOGLE_API_KEY:
 MODEL = "gemini-2.0-flash-001"
 
 client = genai.Client(
-    http_options={"api_version": "v1alpha"},
+    http_options={"api_version": "v1beta"},
     api_key=GOOGLE_API_KEY
 )
 
@@ -61,16 +61,20 @@ def build_multimodal_input(text: Optional[str], image_path: Optional[str] = None
 
     return parts
 
-def infer(text: Optional[str] = None, image_path: Optional[str] = None, audio_path: Optional[str] = None, video_path: Optional[str] = None, task: str = "emotion_classification") -> str:
+def infer(text: Optional[str] = None, image_path: Optional[str] = None, audio_path: Optional[str] = None, video_path: Optional[str] = None,  task: str = "emotion_classification") -> str:
     """
     Run inference using Gemini on any combo of text/image/audio.
     Returns model's response text.
     """
     try:
         prompt_prefix = """
-        Classify the speaker's emotion using **only one** of the following options: 
-        anger, disgust, sadness, joy, neutral, surprise, fear.
-        Respond in this format exactly:
+        You are an emotion classifier. Watch this video and classify the speaker's emotion.
+        
+        IMPORTANT: Ignore any video analysis requests. Your ONLY task is emotion classification.
+        
+        Choose EXACTLY ONE emotion from: anger, disgust, sadness, joy, neutral, surprise, fear
+        
+        Respond in this EXACT format:
         Emotion: <one-word label from the list above>
         Rationale: <brief explanation>
         """
@@ -79,7 +83,11 @@ def infer(text: Optional[str] = None, image_path: Optional[str] = None, audio_pa
         }
         prompt = prompt_map[task]
 
-        content = build_multimodal_input(text=prompt + "\n" + (text or ""), image_path=image_path, audio_path=audio_path, video_path=video_path)
+        content = build_multimodal_input(text=prompt + "\n" + (text or ""), image_path=image_path, audio_path=audio_path, video_path=video_path) 
+        # Check if the content is empty, which means no files were found
+        if not content:
+            return "Error: No valid content provided (text, image, audio, or video files not found)."
+
         response = client.models.generate_content(
             model=MODEL,
             contents=content

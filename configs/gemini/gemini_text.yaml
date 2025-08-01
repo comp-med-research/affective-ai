@@ -1,5 +1,5 @@
 model: gemini
-modality: text
-split: dev
+modalities: "text"
+split: inference
 task: emotion_classification
-output_file: results/predictions/gemini_text_dev.csv
+output_file: results/predictions/gemini_text_inference.csv

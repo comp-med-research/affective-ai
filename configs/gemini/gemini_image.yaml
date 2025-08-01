@@ -1,5 +1,5 @@
 model: gemini
-modality: image
-split: dev
+modalities: "image"
+split: inference
 task: emotion_classification
-output_file: results/predictions/gemini_image_dev.csv
+output_file: results/predictions/gemini_image_inference.csv

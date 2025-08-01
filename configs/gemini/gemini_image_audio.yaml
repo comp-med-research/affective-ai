@@ -1,5 +1,5 @@
 model: gemini
 modalities: "image+audio"
-split: dev
+split: inference
 task: emotion_classification
-output_file: results/predictions/gemini_image_audio_dev.csv
+output_file: results/predictions/gemini_image_audio_inference.csv

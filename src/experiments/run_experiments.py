@@ -45,7 +45,7 @@ def main(config_path: str):
         modalities = [m.lower() for m in raw_modalities]
 
     # Load model module dynamically from src/models
-    model_module = importlib.import_module(f"src.models.{model_name}")
+    model_module = importlib.import_module(f"src.model.{model_name}")
 
     # Load dataset
     merged_path = Path(f"data/merged/{split}_merged.csv")

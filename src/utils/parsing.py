@@ -26,14 +26,27 @@ def parse_emotion_response(response: str) -> tuple[str, str]:
             emotion = response.split("Emotion:")[1].split("Rationale:")[0].strip()
             rationale = response.split("Rationale:")[1].strip()
         else:
-            # fallback: assume first word is emotion
-            emotion = response.strip().split()[0]
-            rationale = response.strip()
+            # More robust fallback: search for valid emotions in the response
+            response_lower = response.lower()
+            found_emotion = None
+            for valid_emotion in VALID_EMOTIONS:
+                if valid_emotion in response_lower:
+                    found_emotion = valid_emotion
+                    break
+            
+            if found_emotion:
+                emotion = found_emotion
+                rationale = response.strip()
+            else:
+                # Last resort: assume first word is emotion
+                emotion = response.strip().split()[0] if response.strip() else "unknown"
+                rationale = response.strip()
 
         emotion_clean = emotion.strip().lower()
         if emotion_clean not in VALID_EMOTIONS:
             emotion = "unknown"    
     except Exception as e:
+        emotion = "unknown"
         rationale = f"Parsing error: {e}"
 
     return emotion, rationale
